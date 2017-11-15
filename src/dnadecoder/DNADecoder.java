@@ -3,11 +3,8 @@
  */
 package dnadecoder;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * @author Eric
@@ -43,7 +40,7 @@ public class DNADecoder {
 		
 		initialDnaStrand.trim().toUpperCase().chars()
 			.mapToObj(c -> Character.valueOf((char)c))
-			.filter(c -> validChars.contains(c))
+			.filter(validChars::contains)
 			.forEach(sb::append);
 			
 		return sb.toString();
