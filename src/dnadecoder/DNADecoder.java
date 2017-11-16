@@ -49,7 +49,7 @@ public class DNADecoder {
 	private String decodeCodes(final String codes, final char[] originalCodes, final char[] decoderCodes) {
 		return codes.chars()
 			.mapToObj(c -> decodeCode((char)c, originalCodes, decoderCodes))
-			.collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+			.collect(StringBuilder::new, StringBuilder::append, StringBuilder::append)
 			.toString();
 	}
 	
