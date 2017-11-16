@@ -3,8 +3,10 @@
  */
 package dnadecoder;
 
+import java.nio.CharBuffer;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.IntStream;
 
 /**
  * @author Eric
@@ -35,7 +37,7 @@ public class DNADecoder {
 		return new DNADecodedResult();
 	}
 	
-	private String formatDnaStrand(String initialDnaStrand) {
+	private String formatDnaStrand(final String initialDnaStrand) {
 		final StringBuilder sb = new StringBuilder();
 		
 		initialDnaStrand.trim().toUpperCase().chars()
@@ -47,28 +49,22 @@ public class DNADecoder {
 	}
 	
 	
-	private String decodeCodes(String codes, char[] originalCodes, char[] decoderCodes) {
+	private String decodeCodes(final String codes, final char[] originalCodes, final char[] decoderCodes) {
 		final StringBuilder sb = new StringBuilder();
 		
 		codes.chars()
-			.forEach(c -> sb.append(decodeCode((char)c, originalCodes, decoderCodes)));
+			.mapToObj(c -> decodeCode((char)c, originalCodes, decoderCodes))
+			.forEach(sb::append);
 		
 		return sb.toString();
 	}
 	
-	private char decodeCode(char code, char[] originalCodes, char[] decoderCodes) {
-		char resultCode = code;
-		
-		for(int i=0; i<originalCodes.length; i++) {
-			char originalCode = originalCodes[i];
-			
-			if(originalCode == code) {
-				resultCode = decoderCodes[i];
-				break;
-			}
-		}
-		
-		return resultCode;
+	private char decodeCode(final char code, final char[] originalCodes, final char[] decoderCodes) {
+		return IntStream.range(0, originalCodes.length)
+			.filter(i -> (originalCodes[i] == code))
+			.mapToObj(i -> decoderCodes[i])
+			.findFirst()
+			.orElse(code);
 	}
 
 }
