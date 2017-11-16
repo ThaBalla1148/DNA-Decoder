@@ -38,25 +38,19 @@ public class DNADecoder {
 	}
 	
 	private String formatDnaStrand(final String initialDnaStrand) {
-		final StringBuilder sb = new StringBuilder();
-		
-		initialDnaStrand.trim().toUpperCase().chars()
-			.mapToObj(c -> Character.valueOf((char)c))
+		return initialDnaStrand.trim().toUpperCase().chars()
+			.mapToObj(c -> (char)c)
 			.filter(validChars::contains)
-			.forEach(sb::append);
-			
-		return sb.toString();
+			.collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+			.toString();
 	}
 	
 	
 	private String decodeCodes(final String codes, final char[] originalCodes, final char[] decoderCodes) {
-		final StringBuilder sb = new StringBuilder();
-		
-		codes.chars()
+		return codes.chars()
 			.mapToObj(c -> decodeCode((char)c, originalCodes, decoderCodes))
-			.forEach(sb::append);
-		
-		return sb.toString();
+			.collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+			.toString();
 	}
 	
 	private char decodeCode(final char code, final char[] originalCodes, final char[] decoderCodes) {
