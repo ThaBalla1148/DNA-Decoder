@@ -41,7 +41,7 @@ public class DNADecoder {
 		return initialDnaStrand.trim().toUpperCase().chars()
 			.mapToObj(c -> (char)c)
 			.filter(validChars::contains)
-			.collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+			.collect(StringBuilder::new, StringBuilder::append, StringBuilder::append)
 			.toString();
 	}
 	

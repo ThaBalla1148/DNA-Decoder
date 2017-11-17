@@ -43,6 +43,8 @@ public class DNADecoderBenchmark {
 		benchmark.setup();
 		
 		{
+			System.out.println("legacyDNADecoder started");
+			
 			long start = System.currentTimeMillis();
 			benchmark.legacyDNADecoder();
 			long end = System.currentTimeMillis() - start;
@@ -51,6 +53,8 @@ public class DNADecoderBenchmark {
 		}
 		
 		{
+			System.out.println("streamDNADecoder started");
+			
 			long start = System.currentTimeMillis();
 			benchmark.streamDNADecoder();
 			long end = System.currentTimeMillis() - start;
@@ -59,6 +63,8 @@ public class DNADecoderBenchmark {
 		}
 		
 		{
+			System.out.println("legacyDNADecoder started");
+			
 			long start = System.currentTimeMillis();
 			benchmark.legacyDNADecoder();
 			long end = System.currentTimeMillis() - start;
@@ -67,6 +73,8 @@ public class DNADecoderBenchmark {
 		}
 		
 		{
+			System.out.println("streamDNADecoder started");
+			
 			long start = System.currentTimeMillis();
 			benchmark.streamDNADecoder();
 			long end = System.currentTimeMillis() - start;
