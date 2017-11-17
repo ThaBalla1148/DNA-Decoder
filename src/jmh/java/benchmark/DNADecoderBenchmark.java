@@ -82,7 +82,7 @@ public class DNADecoderBenchmark {
 	}
 	
 	public void populate(final List<String> list) {
-		Random random = new Random();
+		Random random = new Random(100);
 		
 		IntStream.range(0, maxCodes)
 			.mapToObj(i -> IntStream.range(0, maxCodeLength)

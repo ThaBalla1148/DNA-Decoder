@@ -15,10 +15,10 @@ import java.util.stream.IntStream;
 public class DNADecoder {
 	
 	private final List<Character> validChars = Arrays.asList('A', 'C', 'G', 'T', 'U', ' ');
-	private final char[] defaultDNACodes = new char[] {'A', 'C', 'G', 'T', 'U'};
-	private final char[] secondaryDNACodes = new char[] {'T', 'G', 'C', 'A', 'A'};
-	private final char[] mRNACodes = new char[] {'A', 'C', 'G', 'U', 'U'};
-	private final char[] tRNACodes = new char[] {'U', 'G', 'C', 'A', 'A'};
+	private final char[] defaultDNACodes = new char[] {'A', 'C', 'G', 'T', 'U', ' '};
+	private final char[] secondaryDNACodes = new char[] {'T', 'G', 'C', 'A', 'A', ' '};
+	private final char[] mRNACodes = new char[] {'A', 'C', 'G', 'U', 'U', ' '};
+	private final char[] tRNACodes = new char[] {'U', 'G', 'C', 'A', 'A', ' '};
 	
 	public DNADecoder() {
 		
@@ -47,25 +47,19 @@ public class DNADecoder {
 	
 	
 	private String decodeCodes(final String codes, final char[] originalCodes, final char[] decoderCodes) {
-		final StringBuilder sb = new StringBuilder();
-		
-		for(int i=0; i<codes.length(); i++) {
-			final char origChar = codes.charAt(i);
-			
-			sb.append(decodeCode(origChar, originalCodes, decoderCodes));
-		}
-		
-		return sb.toString();
+		return codes.chars()
+			.mapToObj(c -> decodeCode((char)c, originalCodes, decoderCodes))
+			.collect(StringBuilder::new, StringBuilder::append, StringBuilder::append)
+			.toString();
 	}
 	
 	private char decodeCode(final char code, final char[] originalCodes, final char[] decoderCodes) {
 		int idx = IntStream.range(0, originalCodes.length)
 			.filter(i -> (originalCodes[i] == code))
-			.findAny()
+			.findFirst()
 			.getAsInt();
 		
 		return decoderCodes[idx];
-			
 	}
 
 }
