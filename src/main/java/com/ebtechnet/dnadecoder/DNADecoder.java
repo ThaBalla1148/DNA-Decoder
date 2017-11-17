@@ -1,7 +1,7 @@
 /**
  * 
  */
-package dnadecoder;
+package com.ebtechnet.dnadecoder;
 
 import java.nio.CharBuffer;
 import java.util.Arrays;

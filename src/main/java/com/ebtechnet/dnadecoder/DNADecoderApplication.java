@@ -1,4 +1,4 @@
-package dnadecoder;
+package com.ebtechnet.dnadecoder;
 /**
  * 
  */

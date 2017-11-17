@@ -1,4 +1,4 @@
-package dnadecoder;
+package com.ebtechnet.dnadecoder;
 
 public class DNADecodedResult {
 	private String dnaStrand1 = "";
