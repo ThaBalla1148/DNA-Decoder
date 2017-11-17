@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.ebtechnet.dnadecoder;
+package com.ebtechnet.dnadecoder.decoder;
 
 import java.nio.CharBuffer;
 import java.util.Arrays;
@@ -47,18 +47,25 @@ public class DNADecoder {
 	
 	
 	private String decodeCodes(final String codes, final char[] originalCodes, final char[] decoderCodes) {
-		return codes.chars()
-			.mapToObj(c -> decodeCode((char)c, originalCodes, decoderCodes))
-			.collect(StringBuilder::new, StringBuilder::append, StringBuilder::append)
-			.toString();
+		final StringBuilder sb = new StringBuilder();
+		
+		for(int i=0; i<codes.length(); i++) {
+			final char origChar = codes.charAt(i);
+			
+			sb.append(decodeCode(origChar, originalCodes, decoderCodes));
+		}
+		
+		return sb.toString();
 	}
 	
 	private char decodeCode(final char code, final char[] originalCodes, final char[] decoderCodes) {
-		return IntStream.range(0, originalCodes.length)
+		int idx = IntStream.range(0, originalCodes.length)
 			.filter(i -> (originalCodes[i] == code))
-			.mapToObj(i -> decoderCodes[i])
-			.findFirst()
-			.orElse(code);
+			.findAny()
+			.getAsInt();
+		
+		return decoderCodes[idx];
+			
 	}
 
 }

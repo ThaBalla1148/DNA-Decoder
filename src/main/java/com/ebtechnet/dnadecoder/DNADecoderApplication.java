@@ -5,6 +5,9 @@ package com.ebtechnet.dnadecoder;
 
 import java.util.Scanner;
 
+import com.ebtechnet.dnadecoder.decoder.DNADecodedResult;
+import com.ebtechnet.dnadecoder.decoder.DNADecoder;
+
 /**
  * @author Eric
  *
