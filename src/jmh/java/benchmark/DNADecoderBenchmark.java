@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.openjdk.jmh.annotations.Benchmark;
@@ -20,8 +21,10 @@ import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.Warmup;
 
+import com.ebtechnet.dnadecoder.decoder.StreamDNADecoder;
+import com.ebtechnet.dnadecoder.decoder.DNADecodedResult;
 import com.ebtechnet.dnadecoder.decoder.DNADecoder;
-import com.ebtechnet.dnadecoder.decoder.DNADecoderLegacy;
+import com.ebtechnet.dnadecoder.decoder.LegacyDNADecoder;
 
 /**
  * @author Eric
@@ -35,8 +38,8 @@ public class DNADecoderBenchmark {
 	volatile List<String> codes = null;
 	final char[] validChars = new char[] {'A', 'C', 'G', 'T', 'U'};
 	
-	final DNADecoder streamDNADecoder = new DNADecoder();
-	final DNADecoderLegacy legacyDNADecoder = new DNADecoderLegacy();
+	final static DNADecoder streamDNADecoder = new StreamDNADecoder();
+	final static DNADecoder legacyDNADecoder = new LegacyDNADecoder();
 	
 	public static void main(String[] args) {
 		DNADecoderBenchmark benchmark = new DNADecoderBenchmark();
@@ -46,7 +49,7 @@ public class DNADecoderBenchmark {
 			System.out.println("legacyDNADecoder started");
 			
 			long start = System.currentTimeMillis();
-			benchmark.legacyDNADecoder();
+			benchmark.decodeDNACodes(legacyDNADecoder);
 			long end = System.currentTimeMillis() - start;
 			
 			System.out.println("legacyDNADecoder Took: " + end);
@@ -56,7 +59,7 @@ public class DNADecoderBenchmark {
 			System.out.println("streamDNADecoder started");
 			
 			long start = System.currentTimeMillis();
-			benchmark.streamDNADecoder();
+			benchmark.decodeDNACodes(streamDNADecoder);
 			long end = System.currentTimeMillis() - start;
 			
 			System.out.println("streamDNADecoder Took: " + end);
@@ -66,7 +69,7 @@ public class DNADecoderBenchmark {
 			System.out.println("legacyDNADecoder started");
 			
 			long start = System.currentTimeMillis();
-			benchmark.legacyDNADecoder();
+			benchmark.decodeDNACodes(legacyDNADecoder);
 			long end = System.currentTimeMillis() - start;
 			
 			System.out.println("legacyDNADecoder Took: " + end);
@@ -76,7 +79,27 @@ public class DNADecoderBenchmark {
 			System.out.println("streamDNADecoder started");
 			
 			long start = System.currentTimeMillis();
-			benchmark.streamDNADecoder();
+			benchmark.decodeDNACodes(streamDNADecoder);
+			long end = System.currentTimeMillis() - start;
+			
+			System.out.println("streamDNADecoder Took: " + end);
+		}
+		
+		{
+			System.out.println("legacyDNADecoder started");
+			
+			long start = System.currentTimeMillis();
+			benchmark.decodeDNACodes(legacyDNADecoder);
+			long end = System.currentTimeMillis() - start;
+			
+			System.out.println("legacyDNADecoder Took: " + end);
+		}
+		
+		{
+			System.out.println("streamDNADecoder started");
+			
+			long start = System.currentTimeMillis();
+			benchmark.decodeDNACodes(streamDNADecoder);
 			long end = System.currentTimeMillis() - start;
 			
 			System.out.println("streamDNADecoder Took: " + end);
@@ -105,10 +128,21 @@ public class DNADecoderBenchmark {
 	@Fork(2)
 	@Measurement(iterations = 5)
 	@Warmup(iterations = 5)
+	public List<DNADecodedResult> decodeDNACodes(DNADecoder decoder) {
+		return codes.stream()
+				.parallel()
+				.map(decoder::decode)
+				.collect(Collectors.toList());
+	}
+	
+	@Benchmark
+	@BenchmarkMode(Mode.AverageTime)
+	@OutputTimeUnit(TimeUnit.MILLISECONDS)
+	@Fork(2)
+	@Measurement(iterations = 5)
+	@Warmup(iterations = 5)
 	public void streamDNADecoder() {
-		for(String code : codes) {
-			streamDNADecoder.decode(code);
-		}
+		codes.stream().parallel().forEach(streamDNADecoder::decode);
 	}
 	
 	@Benchmark
@@ -118,9 +152,7 @@ public class DNADecoderBenchmark {
 	@Measurement(iterations = 5)
 	@Warmup(iterations = 5)
 	public void legacyDNADecoder() {
-		for(String code : codes) {
-			legacyDNADecoder.decode(code);
-		}
+		codes.stream().parallel().forEach(legacyDNADecoder::decode);
 	}
 
 }

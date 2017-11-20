@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 import com.ebtechnet.dnadecoder.decoder.DNADecodedResult;
 import com.ebtechnet.dnadecoder.decoder.DNADecoder;
+import com.ebtechnet.dnadecoder.decoder.StreamDNADecoder;
 
 /**
  * @author Eric
@@ -20,7 +21,7 @@ public class DNADecoderApplication {
 	public static void main(String[] args) {
 		System.out.println("Starting DNA Decoder");
 		
-		final DNADecoder dnaDecoder = new DNADecoder();
+		final DNADecoder dnaDecoder = new StreamDNADecoder();
 		
 		Scanner scanner = null;
 		

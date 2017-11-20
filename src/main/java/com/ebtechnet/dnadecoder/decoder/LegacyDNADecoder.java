@@ -10,7 +10,7 @@ import java.util.List;
  * @author Eric
  *
  */
-public class DNADecoderLegacy {
+public class LegacyDNADecoder implements DNADecoder{
 	
 	private final List<Character> validChars = Arrays.asList('A', 'C', 'G', 'T', 'U', ' ');
 	private final char[] defaultDNACodes = new char[] {'A', 'C', 'G', 'T', 'U'};
@@ -18,10 +18,11 @@ public class DNADecoderLegacy {
 	private final char[] mRNACodes = new char[] {'A', 'C', 'G', 'U', 'U'};
 	private final char[] tRNACodes = new char[] {'U', 'G', 'C', 'A', 'A'};
 	
-	public DNADecoderLegacy() {
+	public LegacyDNADecoder() {
 		
 	}
 	
+	@Override
 	public DNADecodedResult decode(final String initialDnaStrand) {
 		if(initialDnaStrand != null) {
 			final String dnaStrand1 = formatDnaStrand(initialDnaStrand.toUpperCase().trim());
