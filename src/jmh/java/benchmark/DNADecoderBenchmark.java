@@ -35,12 +35,12 @@ import com.ebtechnet.dnadecoder.decoder.StreamDNADecoderV2;
 @State(Scope.Benchmark)
 public class DNADecoderBenchmark {
 	
-	final static int maxRuns = 3;
+	final static int maxRuns = 5;
 	
 	final int maxCodes = 100000;
 	final int maxCodeLength = 100;
 	volatile List<String> codes = null;
-	final char[] validChars = new char[] {'A', 'C', 'G', 'T', 'U'};
+	final char[] validChars = new char[] {'A', 'C', 'G', 'T', 'U', 'X', 'Y'};
 	
 	final static DNADecoder streamDNADecoder = new StreamDNADecoder();
 	final static DNADecoder streamDNADecoderV2 = new StreamDNADecoderV2();
@@ -59,7 +59,7 @@ public class DNADecoderBenchmark {
 				benchmark.decodeDNACodes(legacyDNADecoder);
 				long end = System.currentTimeMillis() - start;
 				
-				if(i == maxRuns -1) System.out.println("legacyDNADecoder Took: " + end);
+				if(i == maxRuns - 1) System.out.println("legacyDNADecoder Took: " + end);
 			}
 			
 			{				
@@ -67,7 +67,7 @@ public class DNADecoderBenchmark {
 				benchmark.decodeDNACodes(legacyDNADecoderV2);
 				long end = System.currentTimeMillis() - start;
 				
-				if(i == maxRuns -1) System.out.println("legacyDNADecoderV2 Took: " + end);
+				if(i == maxRuns - 1) System.out.println("legacyDNADecoderV2 Took: " + end);
 			}
 			
 			{
@@ -75,7 +75,7 @@ public class DNADecoderBenchmark {
 				benchmark.decodeDNACodes(streamDNADecoder);
 				long end = System.currentTimeMillis() - start;
 				
-				if(i == maxRuns -1) System.out.println("streamDNADecoder Took: " + end);
+				if(i == maxRuns - 1) System.out.println("streamDNADecoder Took: " + end);
 			}
 			
 			{
@@ -83,7 +83,7 @@ public class DNADecoderBenchmark {
 				benchmark.decodeDNACodes(streamDNADecoderV2);
 				long end = System.currentTimeMillis() - start;
 				
-				if(i == maxRuns -1) System.out.println("streamDNADecoderV2 Took: " + end);
+				if(i == maxRuns - 1) System.out.println("streamDNADecoderV2 Took: " + end);
 			}
 		}
 
