@@ -21,10 +21,12 @@ import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.Warmup;
 
-import com.ebtechnet.dnadecoder.decoder.StreamDNADecoder;
 import com.ebtechnet.dnadecoder.decoder.DNADecodedResult;
 import com.ebtechnet.dnadecoder.decoder.DNADecoder;
 import com.ebtechnet.dnadecoder.decoder.LegacyDNADecoder;
+import com.ebtechnet.dnadecoder.decoder.LegacyDNADecoderV2;
+import com.ebtechnet.dnadecoder.decoder.StreamDNADecoder;
+import com.ebtechnet.dnadecoder.decoder.StreamDNADecoderV2;
 
 /**
  * @author Eric
@@ -33,77 +35,58 @@ import com.ebtechnet.dnadecoder.decoder.LegacyDNADecoder;
 @State(Scope.Benchmark)
 public class DNADecoderBenchmark {
 	
+	final static int maxRuns = 3;
+	
 	final int maxCodes = 100000;
 	final int maxCodeLength = 100;
 	volatile List<String> codes = null;
 	final char[] validChars = new char[] {'A', 'C', 'G', 'T', 'U'};
 	
 	final static DNADecoder streamDNADecoder = new StreamDNADecoder();
+	final static DNADecoder streamDNADecoderV2 = new StreamDNADecoderV2();
 	final static DNADecoder legacyDNADecoder = new LegacyDNADecoder();
+	final static DNADecoder legacyDNADecoderV2 = new LegacyDNADecoderV2();
 	
 	public static void main(String[] args) {
 		DNADecoderBenchmark benchmark = new DNADecoderBenchmark();
 		benchmark.setup();
 		
-		{
-			System.out.println("legacyDNADecoder started");
-			
-			long start = System.currentTimeMillis();
-			benchmark.decodeDNACodes(legacyDNADecoder);
-			long end = System.currentTimeMillis() - start;
-			
-			System.out.println("legacyDNADecoder Took: " + end);
-		}
 		
-		{
-			System.out.println("streamDNADecoder started");
+		for(int i=0; i<maxRuns; i++) {
+			System.out.println("Running test # " + (i + 1));
+			{
+				long start = System.currentTimeMillis();
+				benchmark.decodeDNACodes(legacyDNADecoder);
+				long end = System.currentTimeMillis() - start;
+				
+				if(i == maxRuns -1) System.out.println("legacyDNADecoder Took: " + end);
+			}
 			
-			long start = System.currentTimeMillis();
-			benchmark.decodeDNACodes(streamDNADecoder);
-			long end = System.currentTimeMillis() - start;
+			{				
+				long start = System.currentTimeMillis();
+				benchmark.decodeDNACodes(legacyDNADecoderV2);
+				long end = System.currentTimeMillis() - start;
+				
+				if(i == maxRuns -1) System.out.println("legacyDNADecoderV2 Took: " + end);
+			}
 			
-			System.out.println("streamDNADecoder Took: " + end);
+			{
+				long start = System.currentTimeMillis();
+				benchmark.decodeDNACodes(streamDNADecoder);
+				long end = System.currentTimeMillis() - start;
+				
+				if(i == maxRuns -1) System.out.println("streamDNADecoder Took: " + end);
+			}
+			
+			{
+				long start = System.currentTimeMillis();
+				benchmark.decodeDNACodes(streamDNADecoderV2);
+				long end = System.currentTimeMillis() - start;
+				
+				if(i == maxRuns -1) System.out.println("streamDNADecoderV2 Took: " + end);
+			}
 		}
-		
-		{
-			System.out.println("legacyDNADecoder started");
-			
-			long start = System.currentTimeMillis();
-			benchmark.decodeDNACodes(legacyDNADecoder);
-			long end = System.currentTimeMillis() - start;
-			
-			System.out.println("legacyDNADecoder Took: " + end);
-		}
-		
-		{
-			System.out.println("streamDNADecoder started");
-			
-			long start = System.currentTimeMillis();
-			benchmark.decodeDNACodes(streamDNADecoder);
-			long end = System.currentTimeMillis() - start;
-			
-			System.out.println("streamDNADecoder Took: " + end);
-		}
-		
-		{
-			System.out.println("legacyDNADecoder started");
-			
-			long start = System.currentTimeMillis();
-			benchmark.decodeDNACodes(legacyDNADecoder);
-			long end = System.currentTimeMillis() - start;
-			
-			System.out.println("legacyDNADecoder Took: " + end);
-		}
-		
-		{
-			System.out.println("streamDNADecoder started");
-			
-			long start = System.currentTimeMillis();
-			benchmark.decodeDNACodes(streamDNADecoder);
-			long end = System.currentTimeMillis() - start;
-			
-			System.out.println("streamDNADecoder Took: " + end);
-		}
+
 	}
 	
 	@Setup
