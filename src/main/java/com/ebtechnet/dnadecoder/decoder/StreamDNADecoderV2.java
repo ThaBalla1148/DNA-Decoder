@@ -6,6 +6,7 @@ package com.ebtechnet.dnadecoder.decoder;
 import java.nio.CharBuffer;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.IntUnaryOperator;
 import java.util.stream.IntStream;
 
 /**
@@ -36,14 +37,9 @@ public class StreamDNADecoderV2 implements DNADecoder {
 			final StringBuilder tRNA = new StringBuilder();
 			
 			initialDnaStrand.trim().toUpperCase().chars()
-				.map(c -> validChars.indexOf((char)c))
-				.filter(idx -> idx > -1)
-				.forEach(idx -> {
-					dnaStrand1.append(defaultDNACodes[idx]);
-					dnaStrand2.append(secondaryDNACodes[idx]);
-					mRNA.append(mRNACodes[idx]);
-					tRNA.append(tRNACodes[idx]);
-				});
+				.map(this::findValidCharIndex)
+				.filter(this::isValidIndex)
+				.forEach(idx -> writeChars(idx, dnaStrand1, dnaStrand2, mRNA, tRNA));
 
 			return new DNADecodedResult(dnaStrand1.toString(), dnaStrand2.toString(), mRNA.toString(), tRNA.toString());
 		}
@@ -52,6 +48,19 @@ public class StreamDNADecoderV2 implements DNADecoder {
 	}
 
 	
+	private int findValidCharIndex(final int c) {
+		return validChars.indexOf((char)c);
+	}
 	
+	private boolean isValidIndex(final int idx) {
+		return idx > -1;
+	}
+	
+	private void writeChars(final int idx, final StringBuilder dnaStrand1, final StringBuilder dnaStrand2, final StringBuilder mRNA, final StringBuilder tRNA) {
+		dnaStrand1.append(defaultDNACodes[idx]);
+		dnaStrand2.append(secondaryDNACodes[idx]);
+		mRNA.append(mRNACodes[idx]);
+		tRNA.append(tRNACodes[idx]);
+	}
 
 }
