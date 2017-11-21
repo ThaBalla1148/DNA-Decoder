@@ -15,7 +15,7 @@ import java.util.stream.IntStream;
  */
 public class StreamDNADecoderV2 implements DNADecoder {
 	
-	private final List<Character> validChars = Arrays.asList('A', 'C', 'G', 'T', 'U', ' ');
+	private final char[] validChars = new char[] {'A', 'C', 'G', 'T', 'U', ' '};
 	private final char[] defaultDNACodes = new char[] {'A', 'C', 'G', 'T', 'U', ' '};
 	private final char[] secondaryDNACodes = new char[] {'T', 'G', 'C', 'A', 'A', ' '};
 	private final char[] mRNACodes = new char[] {'A', 'C', 'G', 'U', 'U', ' '};
@@ -46,10 +46,16 @@ public class StreamDNADecoderV2 implements DNADecoder {
 		
 		return new DNADecodedResult();
 	}
-
 	
 	private int findValidCharIndex(final int c) {
-		return validChars.indexOf((char)c);
+		char castedC = (char)c;
+		for(int i=0; i<validChars.length; i++) {
+			if(validChars[i] == castedC) {
+				return i;
+			}
+		}
+		
+		return -1;
 	}
 	
 	private boolean isValidIndex(final int idx) {
