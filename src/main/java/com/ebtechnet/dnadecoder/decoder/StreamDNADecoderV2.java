@@ -3,12 +3,6 @@
  */
 package com.ebtechnet.dnadecoder.decoder;
 
-import java.nio.CharBuffer;
-import java.util.Arrays;
-import java.util.List;
-import java.util.function.IntUnaryOperator;
-import java.util.stream.IntStream;
-
 /**
  * @author Eric
  *
